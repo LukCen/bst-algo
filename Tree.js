@@ -1,3 +1,4 @@
+
 import { Node } from "./Node.js";
 
 export class Tree {
@@ -105,7 +106,85 @@ export class Tree {
         }
         return result
       }
+      inorder(root, visitor = null) {
+        if (root === null) {
+          return []
+        }
+        
+        // apply the visitor function if provided
+        if (visitor !== null) {
+          visitor(root)
+        } 
+        
+        // traverse the left subtree
+        let leftValues = this.inorder(root.left, visitor)
+        // traverse the right subtree
+        let rightValues = this.inorder(root.right, visitor)
+        return [...leftValues, root.value, ...rightValues]
+      }
 
+      preorder(root, visitor = null) {
+        if(root === null) {
+          return []
+        }
+
+
+        const leftValues = this.preorder(root.left, visitor) 
+        const rightValues = this.preorder(root.right, visitor)
+
+        return [root.value, ...leftValues, ...rightValues]
+      }
+
+      postorder(root, visitor = null) {
+        if (root === null) {
+          return []
+        }
+
+        const leftValues = this.postorder(root.left, visitor)
+        const rightValues = this.postorder(root.right, visitor)
+
+        return [...leftValues, ...rightValues, root.value]
+      }
+
+      height (root) {
+        // height is 0 if the tree is empty - base case
+        if (root === null) {
+          return -1;
+        }
+
+        let heightLeft = this.height(root.left)
+        let heightRight = this.height(root.right)
+
+        if(heightLeft > heightRight) {
+          return heightLeft + 1
+        } else {
+          return heightRight + 1
+        }
+      }
+
+      depth (node, root = this.root, depth = 0)  {
+      if (!node) {
+        return null;
+      }
+       if (root === null) { 
+        return 0
+       }
+
+       if (root.value === node.value) { 
+        return depth
+       }
+        
+       let count = this.depth(node, root.left, depth + 1)
+
+       if(count !== 0) {
+        return count
+       }
+
+       return this.depth(node, root.right, depth + 1)
+      }
+
+
+      // this is a helper method used by the 'delete' method
       minValueNode(node) {
         let current = node
         while(current.left) {
@@ -113,9 +192,6 @@ export class Tree {
         }
         return current
       }
-
-
-      
     }
     
 
@@ -137,18 +213,25 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
 
 const randomArray = [8, 2, 11, 6, 5, 9, 3, 1, 7, 4, 10, 12]
 let test = new Tree(randomArray)
-console.log(test)
-prettyPrint(test.root)
-console.log('-------------------')
-test.insert(test.root, 31)
-prettyPrint(test.root)
-console.log('-------------------')
-test.delete(test.root, 31)
-prettyPrint(test.root)
-console.log(test.find(test.root, 11))
+
+
+
 
 let visitor = (n) => {
   console.log(n.value)
 }
 
-test.levelOrder(test.root, visitor)
+
+
+
+
+let testValue1 = new Node(11)
+let testValue2 = new Node(8)
+let testValue3 = new Node(2)
+let testValue4 = new Node(4)
+console.log(test.height(test.root))
+console.log('-------------------')
+console.log(test.depth(testValue1))
+console.log(test.depth(testValue2))
+console.log(test.depth(testValue3))
+console.log(test.depth(testValue4))
