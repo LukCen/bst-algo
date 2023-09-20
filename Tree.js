@@ -75,7 +75,7 @@ export class Tree {
 
       }
 
-      levelOrder(root, visitor = null) {
+      levelOrder(root = this.root, visitor = null) {
         if(root === null) {
           return []
         }
@@ -123,7 +123,7 @@ export class Tree {
         return [...leftValues, root.value, ...rightValues]
       }
 
-      preorder(root, visitor = null) {
+      preorder(root = this.root, visitor = null) {
         if(root === null) {
           return []
         }
@@ -135,7 +135,7 @@ export class Tree {
         return [root.value, ...leftValues, ...rightValues]
       }
 
-      postorder(root, visitor = null) {
+      postorder(root = this.root, visitor = null) {
         if (root === null) {
           return []
         }
@@ -181,6 +181,27 @@ export class Tree {
        }
 
        return this.depth(node, root.right, depth + 1)
+      }
+
+      isBalanced(root = this.root) {
+        if (root === null) {
+          return false;
+        }
+
+        let leftHeight = this.height(root.left)
+        let rightHeight = this.height(root.right)
+
+
+        if(Math.abs(leftHeight - rightHeight) < 2) {
+          return true
+        } else {
+          return false
+        }
+      }
+
+      rebalance() {
+        let nodes = this.inorder(this.root)
+        this.root = this.buildTree(nodes)
       }
 
 
@@ -229,9 +250,28 @@ let testValue1 = new Node(11)
 let testValue2 = new Node(8)
 let testValue3 = new Node(2)
 let testValue4 = new Node(4)
-console.log(test.height(test.root))
-console.log('-------------------')
-console.log(test.depth(testValue1))
-console.log(test.depth(testValue2))
-console.log(test.depth(testValue3))
-console.log(test.depth(testValue4))
+// console.log(test.height(test.root))
+// console.log('-------------------')
+// console.log(test.depth(testValue1))
+// console.log(test.depth(testValue2))
+// console.log(test.depth(testValue3))
+// console.log(test.depth(testValue4))
+// console.log(test.isBalanced(test.root))
+// prettyPrint(test.root)
+// test.insert(test.root, 23)
+// test.insert(test.root, 16)
+// test.insert(test.root, 31)
+// test.insert(test.root, 29)
+// test.insert(test.root, 77)
+// test.insert(test.root, 71)
+// test.insert(test.root, 25)
+// test.insert(test.root, 77)
+// test.insert(test.root, 99)
+// test.insert(test.root, 90)
+// prettyPrint(test.root)
+// console.log(test.isBalanced(test.root))
+// test.rebalance(test)
+// console.log(test.isBalanced(test.root))
+// // prettyPrint(test.root)
+console.log(test.levelOrder())
+console.log(test.preorder())
